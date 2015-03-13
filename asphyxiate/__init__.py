@@ -295,9 +295,11 @@ def render_sectiondef(node, directive):
         'public-attrib': 'Members',
         }
     kind = node.get('kind')
-    title = TITLES.get(kind)
-    assert title is not None, \
-        "cannot handle {node.tag} kind={node.attrib[kind]}".format(node=node)
+    try:
+        title = TITLES[kind]
+    except:
+        log.getChild('render').error("Cannot handle {node.tag} kind={node.attrib[kind]}".format(node=node))
+        return []
 
     sec = docutils.nodes.section(ids=[kind])
     sec.append(docutils.nodes.title(text=title))
